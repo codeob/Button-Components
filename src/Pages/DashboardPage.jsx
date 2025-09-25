@@ -1,12 +1,13 @@
-import React from 'react'
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from 'react';
+import { Outlet } from 'react-router-dom';
+import Sidebar from '../Components/Sidebar';
 
 export default function DashboardPage() {
   const canvasRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
@@ -33,7 +34,7 @@ export default function DashboardPage() {
       }
 
       draw() {
-        ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -64,13 +65,17 @@ export default function DashboardPage() {
       canvas.height = window.innerHeight;
     };
 
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
+
   return (
-    <div className="relative h-screen w-screen flex flex-col justify-center items-center overflow-hidden bg-gradient-to-t from-gray-900 via-slate-900 to-black">
+    <div className="relative min-h-screen w-screen flex overflow-hidden bg-gradient-to-t from-gray-900 via-slate-900 to-black">
       <canvas ref={canvasRef} className="absolute inset-0 z-0" />
-      DashboardPage
+      <Sidebar />
+      <div className="flex-1 p-4 md:ml-64 z-10">
+        <Outlet />
+      </div>
     </div>
-  )
+  );
 }
